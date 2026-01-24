@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Brick &amp; Bolt Home - Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="config.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ff66",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#000000",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        :root {
+            --glass-bg: rgba(0, 0, 0, 0.03);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        .dark {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-card:hover {
+            border-color: #00ff66;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            z-index: 1000;
+        }
+
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        }
+
+        body {
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .text-muted-custom {
+            color: var(--text-muted);
+        }
+
+        /* Chatbot Styles */
+        #chatbot-container {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        #chatbot-container.hidden {
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            display: flex !important;
+            /* Keep flex but hide with opacity/transform */
+        }
+
+        .chat-message {
+            max-width: 85%;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-dots span {
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display selection:bg-primary selection:text-black">
+    <!-- Top Scroll Progress Bar -->
+    <div class="progress-container bg-black/10 dark:bg-white/10">
+        <div id="scroll-progress-bar" class="h-full bg-primary shadow-[0_0_15px_#00ff66] transition-all duration-150"
+            style="width: 0%;"></div>
+    </div>
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header Section -->
+        <header class="sticky top-0 z-50 flex items-center justify-between glass px-6 lg:px-20 py-4">
+            <div class="flex items-center gap-12">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="size-8 bg-primary flex items-center justify-center rounded-lg shadow-[0_0_15px_rgba(0,255,102,0.5)]">
+                        <span class="material-symbols-outlined text-black font-bold">bolt</span>
+                    </div>
+                    <h2 class="text-xl font-black tracking-tighter uppercase italic">Brick <span
+                            class="text-primary">&amp;</span> Bolt</h2>
+                </div>
+                <nav class="hidden md:flex items-center gap-8">
+                    <a class="text-slate-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-semibold uppercase tracking-wider"
+                        href="#">Technic</a>
+                    <a class="text-slate-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-semibold uppercase tracking-wider"
+                        href="#">Icons</a>
+                    <a class="text-slate-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-semibold uppercase tracking-wider"
+                        href="#">Speed Champions</a>
+                    <a class="text-slate-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-semibold uppercase tracking-wider"
+                        href="#">Die-Cast</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-6">
+                <label
+                    class="hidden lg:flex items-center bg-black/5 dark:bg-white/5 rounded-lg border border-white/10 px-4 h-10 focus-within:border-primary transition-all">
+                    <span class="material-symbols-outlined text-slate-500 dark:text-white/50 text-xl">search</span>
+                    <input id="search-input"
+                        class="bg-transparent border-none focus:ring-0 text-sm placeholder:text-slate-400 dark:placeholder:text-white/30 w-48"
+                        placeholder="Search sets..." type="text" />
+                </label>
+                <div class="flex items-center gap-2">
+                    <button id="theme-toggle"
+                        class="flex items-center justify-center rounded-lg h-10 w-10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all">
+                        <span class="material-symbols-outlined">light_mode</span>
+                    </button>
+                    <button
+                        class="relative flex items-center justify-center rounded-lg h-10 w-10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all text-slate-900 dark:text-white">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                        <span
+                            class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-black shadow-[0_0_8px_#00ff66]">3</span>
+                    </button>
+                    <button id="call-ai"
+                        class="flex items-center justify-center rounded-lg h-10 w-10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all text-slate-900 dark:text-white">
+                        <span class="material-symbols-outlined">call</span>
+                    </button>
+                </div>
+                <div class="size-10 rounded-full border-2 border-primary/30 p-0.5">
+                    <div class="h-full w-full rounded-full bg-cover bg-center" data-alt="User profile avatar"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2i74uJqqG24obhNMGzRFWUfHcMFa13zGM6eSzWZ8SmN5Qc3U2hqQfv9H3ypAmhrZiQnX1MO12CKzyZCPgZpkkXVLFB5b7rpbxBkc21BYkfzKNSj5hkKydG_daZilFpbPCvAAfRoWlBD2B_jIjTWHjCqXM3YpvJKELVH7V6ng1dgTTssM5sCy2sUiJlXVKtgpHEAGlvVquCdTUXEqYv76EalTIL6ExMZdc0PMcflNe4a9aDHpR65XipLGQjNYdxLgBAMnovwf8jAg");'>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 w-full max-w-[1440px] mx-auto px-6 lg:px-20 py-8">
+            <!-- Hero Section -->
+            <section class="relative mb-16 @container">
+                <div class="relative overflow-hidden rounded-2xl min-h-[560px] flex flex-col justify-center p-8 lg:p-16 bg-cover bg-center"
+                    data-alt="Premium LEGO Technic supercar 3D render with neon green accents"
+                    style='background-image: linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGseuHpE9a2r-n6Nouyzl0hAsi3IoxJ1x8-h6-DjH4j9U3gOYgKlC6FTd3iV-svL0Cmji10PmGJ8R2fasl621SzHHmVBS71eWbk6T9YPg3fYa6YWX4rDhFzmdZBWGyv1etU6ualcf1d9zHqgFJLod_YLgyntfXx1Oh_2dwD9D2nO36wMolYsUzISjeyAAX66hxq_MXE7OgN54_MPNVG1E2nQwkX27oxFGb1SvhK_qdgwUKSs-FGChYEuwDkoMyO1oxKTBH3A-56wk");'>
+                    <!-- Decorative Particles (Represented by divs) -->
+                    <div
+                        class="absolute top-20 right-40 h-24 w-24 rounded-xl border border-primary/20 bg-primary/5 rotate-12 blur-sm">
+                    </div>
+                    <div
+                        class="absolute bottom-40 right-10 h-16 w-16 rounded-full border border-primary/40 bg-primary/10 -rotate-45 blur-md">
+                    </div>
+                    <div class="relative z-10 max-w-2xl space-y-6">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase">
+                            <span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                            New Release
+                        </div>
+                        <h1
+                            class="text-6xl lg:text-8xl font-black leading-none tracking-tighter uppercase neon-text-glow">
+                            ENGINEERED TO <span class="text-primary italic">PERFECTION</span>
+                        </h1>
+                        <p class="text-lg text-slate-600 dark:text-white/70 max-w-lg font-medium leading-relaxed">
+                            Experience the thrill of LEGO Technic with 3D depth and parallax precision. The definitive
+                            collection for the elite builder.
+                        </p>
+                        <div class="flex items-center gap-4 pt-4">
+                            <button
+                                class="px-8 py-4 bg-primary text-black font-black uppercase tracking-widest rounded-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(0,255,102,0.4)]">
+                                Shop Collection
+                            </button>
+                            <button
+                                class="px-8 py-4 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest rounded-lg hover:bg-white/10 transition-all">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="flex flex-col lg:flex-row gap-10">
+                <!-- Sidebar Filters -->
+                <aside class="w-full lg:w-64 space-y-8 flex-shrink-0">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="text-lg font-bold uppercase tracking-wider">Filters</h3>
+                        <p class="text-slate-400 dark:text-white/40 text-xs font-medium">Refine your collection (42
+                            items)</p>
+                    </div>
+                    <!-- Filter Groups -->
+                    <div class="space-y-6">
+                        <div class="space-y-4">
+                            <p class="text-sm font-bold text-primary/80 uppercase">Scale</p>
+                            <div class="flex flex-col gap-2">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input checked=""
+                                        class="rounded border-white/20 bg-white/5 text-primary focus:ring-primary focus:ring-offset-black"
+                                        type="checkbox" />
+                                    <span
+                                        class="text-sm text-slate-600 dark:text-white/70 group-hover:text-white transition-colors">1:8
+                                        Scale</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="rounded border-white/20 bg-white/5 text-primary focus:ring-primary focus:ring-offset-black"
+                                        type="checkbox" />
+                                    <span
+                                        class="text-sm text-slate-600 dark:text-white/70 group-hover:text-white transition-colors">1:12
+                                        Scale</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                        class="rounded border-white/20 bg-white/5 text-primary focus:ring-primary focus:ring-offset-black"
+                                        type="checkbox" />
+                                    <span
+                                        class="text-sm text-slate-600 dark:text-white/70 group-hover:text-white transition-colors">1:16
+                                        Scale</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm font-bold text-primary/80 uppercase">Price Range</p>
+                                <span class="text-xs text-slate-400 dark:text-white/40">$250 - $800</span>
+                            </div>
+                            <div class="relative h-6 flex items-center pt-2">
+                                <div class="absolute h-1 w-full bg-white/10 rounded-full"></div>
+                                <div class="absolute h-1 w-3/4 left-[15%] bg-primary rounded-full"></div>
+                                <div
+                                    class="absolute left-[15%] size-4 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)] cursor-pointer">
+                                </div>
+                                <div
+                                    class="absolute right-[10%] size-4 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)] cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4 pt-4">
+                            <p class="text-sm font-bold text-primary/80 uppercase">Availability</p>
+                            <div class="space-y-2">
+                                <div
+                                    class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary">
+                                    <span class="material-symbols-outlined text-sm">check_circle</span>
+                                    <span class="text-sm font-bold uppercase tracking-tight">In Stock</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-3 px-3 py-2 rounded-lg border border-white/5 text-slate-500 dark:text-white/50">
+                                    <span class="material-symbols-outlined text-sm">schedule</span>
+                                    <span class="text-sm font-bold uppercase tracking-tight">Pre-order</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full py-3 bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest rounded-lg hover:border-primary/50 transition-all">
+                        Reset Filters
+                    </button>
+                </aside>
+                <!-- Product Grid -->
+                <div class="flex-1">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl font-black uppercase italic tracking-tighter">Featured <span
+                                class="text-primary">Models</span></h2>
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs font-bold text-slate-400 dark:text-white/40 uppercase">Sort by:</span>
+                            <select
+                                class="bg-white/5 border-white/10 rounded text-xs font-bold uppercase py-1 pl-3 pr-8 focus:ring-primary">
+                                <option>Popularity</option>
+                                <option>Price: Low to High</option>
+                                <option>Price: High to Low</option>
+                                <option>Latest</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <!-- Product Card 1 -->
+                        <div data-keywords="yellow supercar mclaren p1 lego technic engine"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="LEGO Technic Supercar yellow model"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrxEq7Nwxn46UgVprGI2yljPLGE415wGMLW9TCdjXRli4p0b8UPMQdvia3_DoYC6v9skoUFyzynf5LAvOmITczj0StYqxSb_AJ3XHPBwdgUbkf2D4kTtZYq1uzWyt3RvKdKi3asEPkAp-MUu87gPKbw1MKf11KJ24l4XzHIWBfVvXF89MFQdMxZllsP0Poyr6EOH7zNhItdDszZML73WTWFrRLOvnOufZ2C3toB0jGSf6jfzU8GJwwgbTDHuK-toLu-TwVmRUC7Rg");'>
+                                </div>
+                                <div
+                                    class="absolute top-3 left-3 px-2 py-1 rounded bg-black/80 text-primary text-[10px] font-black uppercase tracking-tighter">
+                                    1:8 Scale</div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Technic Series
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    McLaren P1 Concept</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$449.99</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 2 -->
+                        <div data-keywords="silver vintage racing car stingray corvette die-cast elite"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="Die-cast vintage silver racing car"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXF0F4H_37Vp6DFoJQShjwx-ZQ8SHPYffBqR9BJmZhUeUW31tk9HDzVpMw_QWP4A9vsFoQ10njzc7M9Mg3LXfR92qrotmabS9milIm9RI6PrvhDwWsXd21CTdOjZaTP5yl9Y2-hmKHbFPJspwEnEMmsk2PyW_YbDr_1zjS7hygK9LepDE_-Y70EEQj5fiIhFaWg9XMFSDDhppP2Nu464C9JqsPicKM3OtKQtB6oIkOIR35Cq23W2zNMtExwS_FmHUyAf5E3u5Oo3o");'>
+                                </div>
+                                <div
+                                    class="absolute top-3 right-3 px-2 py-1 rounded bg-primary text-black text-[10px] font-black uppercase tracking-tighter">
+                                    Limited</div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Die-Cast Elite
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    1967 Silver Stingray</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$129.50</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 3 -->
+                        <div data-keywords="red ferrari f40 sports car speed champions lego"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300 border-primary/40 shadow-[0_0_15px_rgba(0,255,102,0.1)]">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="LEGO Speed Champions red sports car"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBmJ2KmZeXt0sPSqYR5rXEOrpJX8Q3a7QwJrss963VeXPlT5DsEYHSWICIXY8t3RF8aXl2gqH5-xB-9cSRkEUpsyqtCbO83E0dORQxvNEjVbnPkK0VuHCSIzhSXALVGEdVlTPCPQqri2sYqwFYtNcZHcLyLsAYh4JT3OllifylJ_QDftd471ZJQBUzHflxpbZUGaz_J7LvGM-EfP54o3f1fxpHcZ4BnRaMCoeAi_A1iORRmbBmC6RT_ttxE17r7oJTPY1qxrELgy1c");'>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Speed Champions
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    Ferrari F40 Tribute</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$24.99</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 4 -->
+                        <div data-keywords="back to the future delorean time machine lego icons silver movie car"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="LEGO Icons DeLorean time machine"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDgkG5wcQbirfI4dMeFq67hztl9KwLw7I3IK8rQe04QVdlikYQoCIQZBIPt2gApwuMuZVwdxUE8yki3e6kn9qaqQs-E-UV__sUj0yqench67mqsV9lCSmoZsIcLCY4MKD1ryhSSvA3rTdcApG2cZK6iYcVTfKnRXRXbv2Y63Id6OxRPxFvAFLsGGk_qER1Ett_YFb-TsZf36i7AozeSpQpvDwfg19idAx84R3uQzh6Alkg49gqOEr2wrgsF6V9LPs9rTdsWWqgSr54");'>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Icons Cinema
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    Time Machine DeLorean</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$199.99</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 5 -->
+                        <div data-keywords="green mercedes-benz zetros truck 4x4 offroad lego technic"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="LEGO Technic green offroad truck"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLqu_L94cJ_SenJhlDu2wAuxaUYF0Jr3lM3po47OmAkZO4ANkLbJmB6YmUG-JITelFiSyBpvlEVzFVp3_5WptEFfkAMAk9Dp7iVY-WrfmZpUp0lFs5TtRD78zaDFdY0aF8aQNiPei4yTg4Bu1vAb6859i5ksFs-v-9JsDlTFUrD4F_3eUS4nEHrMrlq9OfpWkn2HTGrkLfn2eQDU_mFOB_ezY1uTRPotBf3wQku1FQybt4HMChqWay4-Ziwkpt6rzFSAWN76Dm1Rw");'>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Technic Extreme
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    4x4 Mercedes-Benz Zetros</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$299.99</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 6 -->
+                        <div
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="Premium car collector box set"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgY8PRWqpWvFDweAIreg-Ue3io878A2H7kT9mVgp-oosPWjSqAgQd8mZNQeNGjZKuP_dl_jVNuX9LLgTFegJOPMriIL7du9JAoojBT6BM91jKmIymEEqO-JTqC14nGii_U9igW0Tu-_reK6ovkt2BxyVsM6JdbPDBZsLylW6jvFipytus8ftsdva4oPBmBGRMqYuGpU0gSw2GJQO97G773V79J33OFgzVhBpafn0XCybJ7QzjXcIHUQL5dril2_7FVvFSNLPHn6Ng");'>
+                                </div>
+                                <div
+                                    class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span
+                                        class="text-xs font-black uppercase tracking-widest border border-primary text-primary px-4 py-2 rounded">Notify
+                                        Me</span>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p
+                                    class="text-[10px] text-slate-400 dark:text-white/40 font-black uppercase tracking-widest">
+                                    Coming Soon
+                                </p>
+                                <h3 class="text-sm font-bold text-slate-400 dark:text-white/40 truncate">2024 Ultimate
+                                    Collection</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black text-slate-400 dark:text-white/40">$899.00</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-white/5 text-white/30 cursor-not-allowed">
+                                        <span class="material-symbols-outlined text-xl">notifications</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 7 -->
+                        <div data-keywords="black modern supercar hyper-track z1 elite die-cast fast racing"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="Die-cast black modern supercar"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcBRD-8jtU_byOr5HDtWebYLwqmQLZBCrzCrHwoh-R83YXlsCONju6Ac1ypeNOd874QyHOsdCpF-KZbGFw8f98ZTd4Ric87NhBk9l2b8xXxazOPGJklhBboyvXu5W9hNbN_x8DrOXBwoDSX3dHCVJ8PUDDno_QIV7LYWjK74s_QbuDfW-j2rebNmLu35v11nJtCLUWbssIaE0-bAz74NZN8MJ4JSYusVwmOfNHNlN3Mtm6ZNUuRZZw-U6r7B9YyA0GXI_1oXsH82o");'>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Die-Cast Elite
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    Hyper-Track Z1</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$155.00</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card 8 -->
+                        <div data-keywords="blue rally car alpine turbo speed champions lego racing"
+                            class="glass glass-card group flex flex-col rounded-xl overflow-hidden transition-all duration-300">
+                            <div class="relative aspect-square overflow-hidden">
+                                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                    data-alt="LEGO Speed Champions blue rally car"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLkB0YTI1vZz4PQbEd-nX2D_O8TUpmgeQOiR4Lmc8KcZTXX2MRFLMkAeFOy6CbXChL8azOr7uQJVHdqjhfkIILYa_Ydr32MZ6lw-K7vMRr-QZDzDqGmTaxCv5goIsEyb0qZAZqgRVCjxntKkT5s-Q7bEPYcxMdIT6qI9cjplqh7jiRUG_PEuvDDthk7bWugSwROtfSu-3T9EiCVatkwbRu5lyRAAiyzQ0E0ABir_xoqpv6Zt6KZFuWBOtODX1X9Jx-gQKifrfMwyk");'>
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col gap-1">
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Speed Champions
+                                </p>
+                                <h3
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">
+                                    Alpine Rally Turbo</h3>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-lg font-black">$19.99</span>
+                                    <button
+                                        class="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pagination / Load More -->
+                    <div class="flex justify-center mt-12">
+                        <button
+                            class="px-10 py-3 glass hover:bg-white/10 text-xs font-black uppercase tracking-[0.2em] rounded-lg transition-all border border-white/20">
+                            Load More Inventory
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="mt-20 border-t border-white/5 bg-black/40 py-12 px-6 lg:px-20">
+            <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary font-bold">bolt</span>
+                        <h2 class="text-xl font-black tracking-tighter uppercase italic">Brick &amp; Bolt</h2>
+                    </div>
+                    <p class="text-slate-400 dark:text-white/40 text-sm leading-relaxed">
+                        The ultimate destination for premium brick building sets and elite die-cast collectibles.
+                        Engineered for the enthusiast.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black uppercase text-slate-900 dark:text-white mb-4 tracking-widest">
+                        Inventory</h4>
+                    <ul class="space-y-2 text-sm text-slate-500 dark:text-white/50">
+                        <li><a class="hover:text-primary transition-colors" href="#">New Releases</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Technic Ultimate</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Exclusive Icons</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Retired Sets</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black uppercase text-slate-900 dark:text-white mb-4 tracking-widest">Support
+                    </h4>
+                    <ul class="space-y-2 text-sm text-slate-500 dark:text-white/50">
+                        <li><a class="hover:text-primary transition-colors" href="#">Track Order</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Shipping Info</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Elite Rewards</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Contact Expert</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-sm font-black uppercase text-slate-900 dark:text-white mb-2 tracking-widest">
+                        Newsletter</h4>
+                    <p class="text-xs text-slate-400 dark:text-white/40">Get notified about limited releases.</p>
+                    <div class="flex gap-2">
+                        <input class="bg-white/5 border-white/10 rounded focus:ring-primary text-sm px-4 py-2 flex-1"
+                            placeholder="Email" type="email" />
+                        <button class="bg-primary p-2 rounded text-black hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined">send</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="max-w-[1440px] mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
+                <p>© 2024 Brick &amp; Bolt. All rights reserved.</p>
+                <div class="flex gap-8">
+                    <a class="hover:text-primary transition-colors" href="#">Privacy</a>
+                    <a class="hover:text-primary transition-colors" href="#">Terms</a>
+                    <a class="hover:text-primary transition-colors" href="#">Cookies</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 1. Dynamic Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('scroll-progress-bar');
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        });
+
+        // 2. Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle?.querySelector('.material-symbols-outlined');
+
+        const updateThemeIcon = (isDark) => {
+            if (themeIcon) {
+                themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+            }
+        };
+
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark');
+            updateThemeIcon(true);
+        } else {
+            htmlElement.classList.remove('dark');
+            updateThemeIcon(false);
+        }
+
+        themeToggle?.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            updateThemeIcon(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+
+        // 3. Basic Button Interactivity & Toasts
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 bg-primary text-black font-bold rounded-full shadow-2xl z-50 animate-bounce';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('animate-bounce');
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => toast.remove(), 500);
+            }, 2000);
+        }
+
+        document.querySelectorAll('button').forEach(button => {
+            if (button.id === 'theme-toggle' || button.id === 'send-chat' || button.id === 'close-chat') return;
+
+            button.addEventListener('click', () => {
+                button.classList.add('scale-90');
+                setTimeout(() => button.classList.remove('scale-90'), 100);
+
+                const icon = button.querySelector('.material-symbols-outlined')?.textContent;
+                const text = button.innerText.trim();
+
+                if (icon === 'add_shopping_cart') {
+                    const badge = document.querySelector('.absolute.-top-1.-right-1');
+                    if (badge) badge.textContent = parseInt(badge.textContent) + 1;
+                    showToast('Item added to cart!');
+                } else if (text.toLowerCase().includes('shop') || text.toLowerCase().includes('view')) {
+                    showToast(`Opening ${text}...`);
+                } else if (text.toLowerCase().includes('reset')) {
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) {
+                        searchInput.value = '';
+                        searchInput.dispatchEvent(new Event('input'));
+                    }
+                    showToast('Filters reset');
+                } else if (icon === 'send') {
+                    showToast('Subscription successful!');
+                }
+            });
+        });
+
+        // 4. Search Functionality
+        const searchInput = document.getElementById('search-input');
+        const productGrid = document.getElementById('product-grid');
+        const products = productGrid?.querySelectorAll('.glass-card');
+
+        if (productGrid) {
+            const noResults = document.createElement('div');
+            noResults.id = 'no-results';
+            noResults.className = 'hidden col-span-full py-20 text-center flex flex-col items-center gap-4';
+            noResults.innerHTML = `
+                <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-white/20">search_off</span>
+                <p class="text-xl font-bold text-slate-400 dark:text-white/40 uppercase tracking-widest">No matching models found</p>
+                <button id="clear-search" class="text-primary hover:underline text-sm font-bold uppercase">Clear Search</button>
+            `;
+            productGrid.appendChild(noResults);
+
+            document.getElementById('clear-search')?.addEventListener('click', () => {
+                if (searchInput) {
+                    searchInput.value = '';
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+            });
+
+            searchInput?.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                let visibleCount = 0;
+
+                products?.forEach(product => {
+                    const title = product.querySelector('h3')?.textContent.toLowerCase() || '';
+                    const category = product.querySelector('p')?.textContent.toLowerCase() || '';
+                    const keywords = product.getAttribute('data-keywords')?.toLowerCase() || '';
+
+                    if (title.includes(query) || category.includes(query) || keywords.includes(query)) {
+                        product.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        product.classList.add('hidden');
+                    }
+                });
+
+                noResults.classList.toggle('hidden', visibleCount > 0);
+            });
+        }
+    </script>
+
+    <!-- Call UI -->
+    <div id="call-overlay"
+        class="hidden fixed inset-0 z-[3000] flex items-center justify-center bg-black/60 backdrop-blur-md">
+        <div
+            class="w-80 glass rounded-3xl p-8 flex flex-col items-center gap-8 shadow-2xl border-primary/20 animate-in fade-in zoom-in duration-300">
+            <div class="relative">
+                <div id="call-pulse" class="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
+                <div
+                    class="size-24 bg-primary text-black rounded-full flex items-center justify-center relative z-10 shadow-[0_0_30px_rgba(0,255,102,0.5)]">
+                    <span id="call-icon" class="material-symbols-outlined text-5xl">smart_toy</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <h3 id="call-status"
+                    class="text-xl font-black uppercase tracking-widest text-slate-900 dark:text-white">Ringing...</h3>
+                <p id="call-subtext"
+                    class="text-sm text-slate-500 dark:text-white/40 mt-1 uppercase font-bold tracking-tighter">Brick &
+                    Bolt Voice AI</p>
+                <div id="voice-waves" class="hidden flex items-center justify-center gap-1 mt-4">
+                    <div class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite_0.1s]"></div>
+                    <div class="w-1 h-6 bg-primary rounded-full animate-[bounce_1s_infinite_0.2s]"></div>
+                    <div class="w-1 h-8 bg-primary rounded-full animate-[bounce_1s_infinite_0.3s]"></div>
+                    <div class="w-1 h-6 bg-primary rounded-full animate-[bounce_1s_infinite_0.4s]"></div>
+                    <div class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite_0.5s]"></div>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button id="end-call"
+                    class="size-14 bg-red-500 text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                    <span class="material-symbols-outlined text-3xl">call_end</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot UI -->
+    <div id="chatbot-trigger" class="fixed bottom-6 right-6 z-[2000] cursor-pointer group">
+        <div
+            class="size-14 bg-primary text-black rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,255,102,0.4)] group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-3xl">smart_toy</span>
+        </div>
+    </div>
+
+    <div id="chatbot-container"
+        class="hidden fixed bottom-24 right-6 w-[380px] h-[500px] glass z-[2000] rounded-2xl flex flex-col overflow-hidden shadow-2xl border-primary/20">
+        <!-- Chat Header -->
+        <div class="bg-primary/10 border-b border-primary/20 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-black">
+                    <span class="material-symbols-outlined text-xl">bolt</span>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black uppercase tracking-tight text-slate-900 dark:text-white">Brick & Bolt
+                        AI</h4>
+                    <div class="flex items-center gap-1.5">
+                        <span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                        <span class="text-[10px] font-bold text-primary uppercase">Online</span>
+                    </div>
+                </div>
+            </div>
+            <button id="close-chat" class="text-slate-500 dark:text-white/40 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4 scroll-smooth">
+            <div
+                class="chat-message bg-black/5 dark:bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-slate-600 dark:text-white/70">
+                Hello! I'm your Brick & Bolt assistant. How can I help you explore our collection today?
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-4 border-t border-primary/10 bg-black/5 dark:bg-white/5">
+            <div class="flex gap-2">
+                <input id="chat-input" type="text" placeholder="Ask about our models..."
+                    class="flex-1 bg-white/5 dark:bg-white/10 border border-primary/20 rounded-xl px-4 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/20">
+                <button id="send-chat"
+                    class="bg-primary text-black size-10 rounded-xl flex items-center justify-center hover:scale-105 transition-transform shadow-[0_0_15px_rgba(0,255,102,0.3)] disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span class="material-symbols-outlined text-xl">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 5. Chatbot Functionality
+        const chatbotTrigger = document.getElementById('chatbot-trigger');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const sendChat = document.getElementById('send-chat');
+        const chatMessages = document.getElementById('chat-messages');
+
+        const GROQ_API_KEY = typeof CONFIG !== 'undefined' ? CONFIG.GROQ_API_KEY : "";
+        const GROQ_API_URL = typeof CONFIG !== 'undefined' ? CONFIG.GROQ_API_URL : "https://api.groq.com/openai/v1/chat/completions";
+        const GROQ_MODEL = typeof CONFIG !== 'undefined' ? CONFIG.GROQ_MODEL : "llama-3.3-70b-versatile";
+
+        const SITE_CONTEXT = `
+            You are the AI Assistant for "Brick & Bolt", a premium store for building blocks and die-cast models.
+            Our Current Inventory:
+            1. McLaren P1 Concept (LEGO Technic, 1:8 Scale, $449.99, Yellow)
+            2. 1967 Silver Stingray (Die-Cast Elite, Limited, $129.50, Silver)
+            3. Ferrari F40 Tribute (Speed Champions, $24.99, Red)
+            4. Time Machine DeLorean (Icons Cinema, $199.99, Silver)
+            5. 4x4 Mercedes-Benz Zetros (Technic Extreme, $299.99, Green)
+            6. Hyper-Track Z1 (Die-Cast Elite, $155.00, Black)
+            7. Alpine Rally Turbo (Speed Champions, $19.99, Blue)
+            
+            Key Features: Elite Rewards program, Track Order, Shipping to enthusiasts worldwide.
+            Tone: Energetic, professional, enthusiast-focused.
+            STRICT RULE: ONLY answer questions related to Brick & Bolt, building sets, cars, or toys.
+            IMPORTANT: Keep your responses extremely concise and to the point. Your total response MUST NOT exceed 50 words under any circumstances.
+        `;
+
+        chatbotTrigger?.addEventListener('click', () => chatbotContainer?.classList.toggle('hidden'));
+        closeChat?.addEventListener('click', () => chatbotContainer?.classList.add('hidden'));
+
+        function addMessageToUI(text, sender) {
+            const div = document.createElement('div');
+            div.className = sender === 'user'
+                ? 'chat-message ml-auto bg-primary text-black p-3 rounded-2xl rounded-tr-none text-sm font-medium shadow-lg'
+                : 'chat-message mr-auto bg-black/5 dark:bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-slate-600 dark:text-white/70 border border-primary/10';
+            div.textContent = text;
+            chatMessages?.appendChild(div);
+            if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const id = 'typing-' + Date.now();
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = 'chat-message mr-auto bg-black/5 dark:bg-white/5 p-3 rounded-2xl rounded-tl-none text-slate-400 flex items-center gap-1 typing-dots';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages?.appendChild(div);
+            if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+            return id;
+        }
+
+        async function handleSendMessage() {
+            const message = chatInput.value.trim();
+            if (!message || sendChat.disabled) return;
+
+            addMessageToUI(message, 'user');
+            chatInput.value = '';
+            const typingId = addTypingIndicator();
+            sendChat.disabled = true;
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: GROQ_MODEL,
+                        messages: [{ role: "system", content: SITE_CONTEXT }, { role: "user", content: message }],
+                        temperature: 0.7,
+                        max_tokens: 500
+                    })
+                });
+                const data = await response.json();
+                document.getElementById(typingId)?.remove();
+                addMessageToUI(data.choices[0].message.content, 'ai');
+            } catch (error) {
+                document.getElementById(typingId)?.remove();
+                addMessageToUI("Error connecting to the network.", 'ai');
+            } finally {
+                sendChat.disabled = false;
+            }
+        }
+
+        sendChat?.addEventListener('click', handleSendMessage);
+        chatInput?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(); });
+
+        // 6. Voice Assistant Functionality
+        const callBtn = document.getElementById('call-ai');
+        const callOverlay = document.getElementById('call-overlay');
+        const endCallBtn = document.getElementById('end-call');
+        const callStatus = document.getElementById('call-status');
+        const callPulse = document.getElementById('call-pulse');
+        const voiceWaves = document.getElementById('voice-waves');
+
+        let recognition;
+        let isActive = false;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = async (event) => {
+                const text = event.results[0][0].transcript;
+                callStatus.textContent = "Processing...";
+                voiceWaves.classList.add('hidden');
+
+                try {
+                    const response = await fetch(GROQ_API_URL, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            model: GROQ_MODEL,
+                            messages: [
+                                { role: "system", content: SITE_CONTEXT + " Keep voice responses under 20 words for clarity." },
+                                { role: "user", content: text }
+                            ],
+                            temperature: 0.7,
+                            max_tokens: 100
+                        })
+                    });
+                    const data = await response.json();
+                    const aiText = data.choices[0].message.content;
+                    speak(aiText);
+                } catch (e) {
+                    speak("Sorry, I encountered an error.");
+                }
+            };
+
+            recognition.onend = () => {
+                if (isActive) {
+                    // Do nothing, wait for speech synthesis to finish or manually restart
+                }
+            };
+        }
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.onstart = () => {
+                callStatus.textContent = "AI Speaking...";
+                voiceWaves.classList.remove('hidden');
+            };
+            utterance.onend = () => {
+                if (isActive) {
+                    callStatus.textContent = "Listening...";
+                    voiceWaves.classList.remove('hidden');
+                    recognition.start();
+                }
+            };
+            window.speechSynthesis.speak(utterance);
+        }
+
+        callBtn?.addEventListener('click', () => {
+            isActive = true;
+            callOverlay.classList.remove('hidden');
+            callStatus.textContent = "Ringing...";
+            callPulse.classList.remove('hidden');
+            voiceWaves.classList.add('hidden');
+
+            setTimeout(() => {
+                if (!isActive) return;
+                callStatus.textContent = "Connected";
+                callPulse.classList.add('hidden');
+                speak("Hello! I am your Brick & Bolt voice assistant. How can I help you?");
+            }, 3000);
+        });
+
+        endCallBtn?.addEventListener('click', () => {
+            isActive = false;
+            callOverlay.classList.add('hidden');
+            window.speechSynthesis.cancel();
+            if (recognition) recognition.stop();
+        });
+    </script>
+</body>
+
+</html>
