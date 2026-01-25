@@ -3,7 +3,7 @@ import { AppContext } from '../../App';
 import { CONFIG, SITE_CONTEXT } from '../../config';
 
 export default function Chatbot() {
-    const { isChatOpen, setIsChatOpen } = useContext(AppContext);
+    const { isChatOpen, setIsChatOpen, products } = useContext(AppContext);
     const [messages, setMessages] = useState([
         { text: "Hello! I'm your Brick & Bolt assistant. How can I help you explore our collection today?", sender: 'ai' }
     ]);
@@ -27,6 +27,12 @@ export default function Chatbot() {
         setInputValue('');
         setIsTyping(true);
 
+        const dynamicContext = `
+            ${SITE_CONTEXT}
+            Current Products in Store (${products.length} total):
+            ${products.map((p, i) => `${i + 1}. ${p.title} (${p.category}, $${p.price})`).join('\n')}
+        `;
+
         try {
             const response = await fetch('http://localhost:5000/api/chat', {
                 method: 'POST',
@@ -35,7 +41,7 @@ export default function Chatbot() {
                 },
                 body: JSON.stringify({
                     message,
-                    siteContext: SITE_CONTEXT
+                    siteContext: dynamicContext
                 })
             });
             const data = await response.json();

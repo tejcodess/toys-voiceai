@@ -3,7 +3,7 @@ import { AppContext } from '../../App';
 import { CONFIG, SITE_CONTEXT } from '../../config';
 
 export default function VoiceAssistant() {
-    const { isCallActive, setIsCallActive } = useContext(AppContext);
+    const { isCallActive, setIsCallActive, products } = useContext(AppContext);
     const [callStatus, setCallStatus] = useState("Ringing...");
     const [showWaves, setShowWaves] = useState(false);
     const [isRinging, setIsRinging] = useState(true);
@@ -54,6 +54,13 @@ export default function VoiceAssistant() {
                     setCallStatus("Processing...");
                     setShowWaves(false);
 
+                    // Create dynamic context with current products
+                    const dynamicContext = `
+                        ${SITE_CONTEXT}
+                        Current Products in Store (${products.length} total):
+                        ${products.map((p, i) => `${i + 1}. ${p.title} (${p.category}, $${p.price})`).join('\n')}
+                    `;
+
                     try {
                         const response = await fetch(CONFIG.GROQ_API_URL, {
                             method: 'POST',
@@ -61,7 +68,7 @@ export default function VoiceAssistant() {
                             body: JSON.stringify({
                                 model: CONFIG.GROQ_MODEL,
                                 messages: [
-                                    { role: "system", content: SITE_CONTEXT + " Keep voice responses under 20 words for clarity." },
+                                    { role: "system", content: dynamicContext + " Keep voice responses under 20 words for clarity." },
                                     { role: "user", content: text }
                                 ],
                                 temperature: 0.7,
