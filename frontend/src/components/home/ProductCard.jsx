@@ -49,7 +49,10 @@ export default function ProductCard({ product }) {
                         </button>
                     ) : (
                         <button
-                            onClick={addToCart}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                addToCart(product);
+                            }}
                             className="size-8 flex items-center justify-center rounded-lg bg-primary text-black hover:scale-110 transition-transform"
                         >
                             <span className="material-symbols-outlined text-xl">add_shopping_cart</span>

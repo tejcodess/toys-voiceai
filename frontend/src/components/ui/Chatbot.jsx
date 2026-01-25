@@ -28,20 +28,14 @@ export default function Chatbot() {
         setIsTyping(true);
 
         try {
-            const response = await fetch(CONFIG.GROQ_API_URL, {
+            const response = await fetch('http://localhost:5000/api/chat', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: CONFIG.GROQ_MODEL,
-                    messages: [
-                        { role: "system", content: SITE_CONTEXT },
-                        { role: "user", content: message }
-                    ],
-                    temperature: 0.7,
-                    max_tokens: 500
+                    message,
+                    siteContext: SITE_CONTEXT
                 })
             });
             const data = await response.json();
@@ -92,8 +86,8 @@ export default function Chatbot() {
                         <div
                             key={i}
                             className={`chat-message p-3 rounded-2xl text-sm ${msg.sender === 'user'
-                                    ? 'ml-auto bg-primary text-black rounded-tr-none font-medium shadow-lg'
-                                    : 'mr-auto bg-black/5 dark:bg-white/5 text-slate-600 dark:text-white/70 rounded-tl-none border border-primary/10'
+                                ? 'ml-auto bg-primary text-black rounded-tr-none font-medium shadow-lg'
+                                : 'mr-auto bg-black/5 dark:bg-white/5 text-slate-600 dark:text-white/70 rounded-tl-none border border-primary/10'
                                 }`}
                         >
                             {msg.text}

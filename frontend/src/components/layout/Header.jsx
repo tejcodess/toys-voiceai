@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AppContext } from '../../App';
 
 export default function Header() {
-    const { theme, toggleTheme, cartCount, searchQuery, setSearchQuery, setIsCallActive } = useContext(AppContext);
+    const { theme, toggleTheme, cartCount, searchQuery, setSearchQuery, setIsCallActive, setIsCartOpen } = useContext(AppContext);
 
     return (
         <header className="sticky top-0 z-50 flex items-center justify-between glass px-6 lg:px-20 py-4">
@@ -41,21 +41,26 @@ export default function Header() {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={toggleTheme}
-                        className="flex items-center justify-center rounded-lg h-10 w-10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/5 transition-all hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10"
                     >
                         <span className="material-symbols-outlined">
                             {theme === 'dark' ? 'light_mode' : 'dark_mode'}
                         </span>
                     </button>
-                    <button className="relative flex items-center justify-center rounded-lg h-10 w-10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all text-slate-900 dark:text-white">
+                    <button
+                        onClick={() => setIsCartOpen(true)}
+                        className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-black/5 text-slate-900 transition-all hover:bg-black/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                    >
                         <span className="material-symbols-outlined">shopping_cart</span>
-                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-black shadow-[0_0_8px_#00ff66]">
-                            {cartCount}
-                        </span>
+                        {cartCount > 0 && (
+                            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-black shadow-[0_0_8px_#00ff66]">
+                                {cartCount}
+                            </span>
+                        )}
                     </button>
                     <button
                         onClick={() => setIsCallActive(true)}
-                        className="flex items-center justify-center rounded-lg h-10 w-10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all text-slate-900 dark:text-white"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/5 text-slate-900 transition-all hover:bg-black/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
                     >
                         <span className="material-symbols-outlined">call</span>
                     </button>

@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
-import { products } from '../../data/products';
 import ProductCard from './ProductCard';
 import { AppContext } from '../../App';
 
 export default function ProductGrid() {
-    const { searchQuery, setSearchQuery } = useContext(AppContext);
+    const { products, searchQuery, setSearchQuery } = useContext(AppContext);
 
-    const filteredProducts = products.filter(p =>
+    const filteredProducts = (products || []).filter(p =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (p.keywords && p.keywords.toLowerCase().includes(searchQuery.toLowerCase()))

@@ -1,6 +1,10 @@
-export const products = [
+const { PrismaClient } = require('@prisma/client');
+require('dotenv').config();
+
+const prisma = new PrismaClient();
+
+const products = [
     {
-        id: 1,
         title: "McLaren P1 Concept",
         category: "Technic Series",
         price: 449.99,
@@ -10,7 +14,6 @@ export const products = [
         tag: null
     },
     {
-        id: 2,
         title: "1967 Silver Stingray",
         category: "Die-Cast Elite",
         price: 129.50,
@@ -20,18 +23,15 @@ export const products = [
         tag: "Limited"
     },
     {
-        id: 3,
         title: "Ferrari F40 Tribute",
         category: "Speed Champions",
         price: 24.99,
         scale: null,
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBmJ2KmZeXt0sPSqYR5rXEOrpJX8Q3a7QwJrss963VeXPlT5DsEYHSWICIXY8t3RF8aXl2gqH5-xB-9cSRkEUpsyqtCbO83E0dORQxvNEjVbnPkK0VuHCSIzhSXALVGEdVlTPCPQqri2sYqwFYtNcZHcLyLsAYh4JT3OllifylJ_QDftd471ZJQBUzHflxpbZUGaz_J7LvGM-EfP54o3f1fxpHcZ4BnRaMCoeAi_A1iORRmbBmC6RT_ttxE17r7oJTPY1qxrELgy1c",
         keywords: "red ferrari f40 sports car speed champions lego",
-        tag: null,
-        featured: true
+        tag: null
     },
     {
-        id: 4,
         title: "Time Machine DeLorean",
         category: "Icons Cinema",
         price: 199.99,
@@ -41,7 +41,6 @@ export const products = [
         tag: null
     },
     {
-        id: 5,
         title: "4x4 Mercedes-Benz Zetros",
         category: "Technic Extreme",
         price: 299.99,
@@ -51,7 +50,6 @@ export const products = [
         tag: null
     },
     {
-        id: 6,
         title: "2024 Ultimate Collection",
         category: "Coming Soon",
         price: 899.00,
@@ -62,7 +60,6 @@ export const products = [
         comingSoon: true
     },
     {
-        id: 7,
         title: "Hyper-Track Z1",
         category: "Die-Cast Elite",
         price: 155.00,
@@ -72,7 +69,6 @@ export const products = [
         tag: null
     },
     {
-        id: 8,
         title: "Alpine Rally Turbo",
         category: "Speed Champions",
         price: 19.99,
@@ -82,7 +78,6 @@ export const products = [
         tag: null
     },
     {
-        id: 9,
         title: "Lamborghini Sián FKP 37",
         category: "Technic Ultimate",
         price: 379.99,
@@ -92,7 +87,6 @@ export const products = [
         tag: "Hot"
     },
     {
-        id: 10,
         title: "Porsche 911 GT3 RS",
         category: "Technic Ultimate",
         price: 299.99,
@@ -102,7 +96,6 @@ export const products = [
         tag: null
     },
     {
-        id: 11,
         title: "Bugatti Chiron",
         category: "Technic Ultimate",
         price: 349.99,
@@ -112,7 +105,6 @@ export const products = [
         tag: "Premium"
     },
     {
-        id: 12,
         title: "Ford Mustang GT",
         category: "Icons Classic",
         price: 169.99,
@@ -122,7 +114,6 @@ export const products = [
         tag: null
     },
     {
-        id: 13,
         title: "Land Rover Defender",
         category: "Technic Adventure",
         price: 199.99,
@@ -132,7 +123,6 @@ export const products = [
         tag: null
     },
     {
-        id: 15,
         title: "Nissan GT-R NISMO",
         category: "Speed Champions",
         price: 19.99,
@@ -142,7 +132,6 @@ export const products = [
         tag: null
     },
     {
-        id: 16,
         title: "Toyota GR Supra",
         category: "Speed Champions",
         price: 19.99,
@@ -152,7 +141,6 @@ export const products = [
         tag: null
     },
     {
-        id: 17,
         title: "Jeep Wrangler Rubicon",
         category: "Technic Adventure",
         price: 49.99,
@@ -162,7 +150,6 @@ export const products = [
         tag: "New"
     },
     {
-        id: 18,
         title: "Chevrolet Corvette ZR1",
         category: "Technic Racing",
         price: 49.99,
@@ -172,3 +159,22 @@ export const products = [
         tag: null
     }
 ];
+
+async function main() {
+    console.log('Seeding products...');
+    for (const p of products) {
+        await prisma.product.create({
+            data: p
+        });
+    }
+    console.log('Seed successful!');
+}
+
+main()
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });

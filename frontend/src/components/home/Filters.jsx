@@ -8,14 +8,14 @@ export default function Filters() {
         <aside className="w-full lg:w-64 space-y-8 flex-shrink-0">
             <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-bold uppercase tracking-wider">Filters</h3>
-                <p className="text-slate-400 dark:text-white/40 text-xs font-medium">Refine your collection (42 items)</p>
+                <p className="text-slate-400 dark:text-white/40 text-xs font-medium">Refine your collection (17 items)</p>
             </div>
 
             <div className="space-y-6">
                 <div className="space-y-4">
                     <p className="text-sm font-bold text-primary/80 uppercase">Scale</p>
                     <div className="flex flex-col gap-2">
-                        {['1:8 Scale', '1:12 Scale', '1:16 Scale'].map((scale, i) => (
+                        {['1:8 Scale', '1:10 Scale', '1:12 Scale', '1:16 Scale'].map((scale, i) => (
                             <label key={scale} className="flex items-center gap-3 cursor-pointer group">
                                 <input
                                     defaultChecked={i === 0}
