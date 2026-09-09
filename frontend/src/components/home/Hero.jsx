@@ -28,7 +28,9 @@ export default function Hero() {
                     </p>
                     <div className="flex items-center gap-4 pt-4">
                         <button
-                            onClick={() => showToast('Opening Collection...')}
+                            onClick={() => {
+                                document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
                             className="px-8 py-4 bg-primary text-black font-black uppercase tracking-widest rounded-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(0,255,102,0.4)]"
                         >
                             Shop Collection

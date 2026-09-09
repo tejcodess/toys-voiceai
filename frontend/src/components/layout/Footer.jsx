@@ -22,7 +22,14 @@ export default function Footer() {
                     <h4 className="text-sm font-black uppercase text-slate-900 dark:text-white mb-4 tracking-widest">Inventory</h4>
                     <ul className="space-y-2 text-sm text-slate-500 dark:text-white/50">
                         {['New Releases', 'Technic Ultimate', 'Exclusive Icons', 'Retired Sets'].map(item => (
-                            <li key={item}><a className="hover:text-primary transition-colors" href="#">{item}</a></li>
+                            <li key={item}>
+                                <button
+                                    onClick={() => showToast(`Browsing ${item}`)}
+                                    className="hover:text-primary transition-colors text-left"
+                                >
+                                    {item}
+                                </button>
+                            </li>
                         ))}
                     </ul>
                 </div>
@@ -31,7 +38,14 @@ export default function Footer() {
                     <h4 className="text-sm font-black uppercase text-slate-900 dark:text-white mb-4 tracking-widest">Support</h4>
                     <ul className="space-y-2 text-sm text-slate-500 dark:text-white/50">
                         {['Track Order', 'Shipping Info', 'Elite Rewards', 'Contact Expert'].map(item => (
-                            <li key={item}><a className="hover:text-primary transition-colors" href="#">{item}</a></li>
+                            <li key={item}>
+                                <button
+                                    onClick={() => showToast(`${item}: 24/7 Enthusiast Support active`)}
+                                    className="hover:text-primary transition-colors text-left"
+                                >
+                                    {item}
+                                </button>
+                            </li>
                         ))}
                     </ul>
                 </div>
@@ -56,11 +70,11 @@ export default function Footer() {
             </div>
 
             <div className="max-w-[1440px] mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">
-                <p>© 2024 Brick &amp; Bolt. All rights reserved.</p>
+                <p>© 2026 Brick &amp; Bolt. All rights reserved.</p>
                 <div className="flex gap-8">
-                    <a className="hover:text-primary transition-colors" href="#">Privacy</a>
-                    <a className="hover:text-primary transition-colors" href="#">Terms</a>
-                    <a className="hover:text-primary transition-colors" href="#">Cookies</a>
+                    <button onClick={() => showToast('Privacy Policy')} className="hover:text-primary transition-colors">Privacy</button>
+                    <button onClick={() => showToast('Terms of Service')} className="hover:text-primary transition-colors">Terms</button>
+                    <button onClick={() => showToast('Cookies Preferences')} className="hover:text-primary transition-colors">Cookies</button>
                 </div>
             </div>
         </footer>

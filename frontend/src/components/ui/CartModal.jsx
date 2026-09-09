@@ -10,30 +10,21 @@ export default function CartModal() {
     // Reset checkout status when modal is closed
     useEffect(() => {
         if (!isCartOpen) {
-            setTimeout(() => setCheckoutStatus('idle'), 500);
+            const timer = setTimeout(() => setCheckoutStatus('idle'), 400);
+            return () => clearTimeout(timer);
         }
     }, [isCartOpen]);
 
-    const handleCheckout = async () => {
+    const handleCheckout = () => {
         if (cartItems.length === 0 || checkoutStatus !== 'idle') return;
 
         setCheckoutStatus('processing');
 
-        try {
-            const response = await fetch('http://localhost:5000/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: cartItems })
-            });
-            const data = await response.json();
-
+        setTimeout(() => {
             setCheckoutStatus('completed');
             clearCart();
-            showToast(data.message || 'Order confirmed! 📦');
-        } catch (error) {
-            setCheckoutStatus('idle');
-            showToast('Checkout failed. Please try again.');
-        }
+            showToast('Order confirmed! 📦');
+        }, 800);
     };
 
     if (!isCartOpen) return null;
@@ -53,6 +44,7 @@ export default function CartModal() {
                     <button
                         onClick={() => setIsCartOpen(false)}
                         className="size-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+                        aria-label="Close cart"
                     >
                         <span className="material-symbols-outlined">close</span>
                     </button>
@@ -62,14 +54,14 @@ export default function CartModal() {
                 <div className="flex-1 overflow-y-auto p-6 flex flex-col">
                     {checkoutStatus === 'processing' ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-center animate-pulse">
-                            <div className="size-20 border-4 border-primary border-t-transparent rounded-full animate-spin mb-6"></div>
+                            <div className="size-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-6"></div>
                             <h2 className="text-2xl font-black uppercase tracking-[0.2em]">Processing...</h2>
-                            <p className="text-white/50 text-xs mt-2 uppercase font-bold">Securing your elite collection</p>
+                            <p className="text-slate-500 dark:text-white/50 text-xs mt-2 uppercase font-bold">Securing your elite collection</p>
                         </div>
                     ) : checkoutStatus === 'completed' ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-center animate-in zoom-in duration-500">
-                            <div className="size-24 bg-primary text-black rounded-full flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(0,255,102,0.4)]">
-                                <span className="material-symbols-outlined text-5xl">check_circle</span>
+                            <div className="size-20 bg-primary text-black rounded-full flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(0,255,102,0.4)]">
+                                <span className="material-symbols-outlined text-4xl">check_circle</span>
                             </div>
                             <h2 className="text-3xl font-black uppercase tracking-tighter leading-none mb-2">Ordered!</h2>
                             <p className="text-primary font-bold uppercase tracking-widest text-sm mb-6">Your order will be delivered in 3 days</p>
@@ -95,17 +87,18 @@ export default function CartModal() {
                         <div className="space-y-6">
                             {cartItems.map((item) => (
                                 <div key={item.id} className="flex gap-4 group">
-                                    <div className="size-20 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
+                                    <div className="size-20 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 bg-black/20">
                                         <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <h3 className="font-bold text-sm truncate group-hover:text-primary transition-colors">{item.title}</h3>
                                         <p className="text-[10px] text-primary font-black uppercase tracking-widest mb-2">{item.category}</p>
                                         <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-3 bg-black/20 rounded-lg p-1">
+                                            <div className="flex items-center gap-3 bg-black/20 dark:bg-white/5 rounded-lg p-1">
                                                 <button
                                                     onClick={() => removeFromCart(item.id)}
                                                     className="size-6 flex items-center justify-center hover:text-primary"
+                                                    aria-label="Decrease quantity"
                                                 >
                                                     <span className="material-symbols-outlined text-sm">remove</span>
                                                 </button>
@@ -113,6 +106,7 @@ export default function CartModal() {
                                                 <button
                                                     onClick={() => addToCart(item)}
                                                     className="size-6 flex items-center justify-center hover:text-primary"
+                                                    aria-label="Increase quantity"
                                                 >
                                                     <span className="material-symbols-outlined text-sm">add</span>
                                                 </button>
@@ -130,7 +124,7 @@ export default function CartModal() {
                 {checkoutStatus === 'idle' && cartItems.length > 0 && (
                     <div className="p-6 border-t border-primary/20 bg-black/20 space-y-4">
                         <div className="flex justify-between items-end">
-                            <span className="text-xs font-bold uppercase text-white/50 tracking-widest">Subtotal</span>
+                            <span className="text-xs font-bold uppercase text-slate-400 dark:text-white/50 tracking-widest">Subtotal</span>
                             <span className="text-2xl font-black text-primary">${total.toFixed(2)}</span>
                         </div>
                         <button

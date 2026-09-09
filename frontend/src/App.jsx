@@ -1,35 +1,30 @@
-import React, { useState, useEffect, createContext, useContext, useRef } from 'react';
+import React, { useState, useEffect, createContext, useRef } from 'react';
 import Header from './components/layout/Header';
 import Hero from './components/home/Hero';
 import Filters from './components/home/Filters';
 import ProductGrid from './components/home/ProductGrid';
 import Footer from './components/layout/Footer';
-import Chatbot from './components/ui/Chatbot';
-import VoiceAssistant from './components/ui/VoiceAssistant';
 import ScrollProgress from './components/ui/ScrollProgress';
 import Toast from './components/ui/Toast';
 import CartModal from './components/ui/CartModal';
+import { products as initialProducts } from './data/products';
 
 export const AppContext = createContext();
 
 export default function App() {
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    const [theme, setTheme] = useState(
+        () => localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    );
     const [cartItems, setCartItems] = useState([]);
-    const [products, setProducts] = useState([]);
+    const [products] = useState(initialProducts);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isChatOpen, setIsChatOpen] = useState(false);
-    const [isCallActive, setIsCallActive] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedScale, setSelectedScale] = useState([]);
+    const [sortBy, setSortBy] = useState('Popularity');
     const [toasts, setToasts] = useState([]);
 
     const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/api/products')
-            .then(res => res.json())
-            .then(data => setProducts(data))
-            .catch(err => console.error('Error fetching products:', err));
-    }, []);
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -45,7 +40,6 @@ export default function App() {
 
     const showToast = (message) => {
         const now = Date.now();
-
         // Block duplicate messages within 500ms
         if (message === lastToastRef.current.message && now - lastToastRef.current.time < 500) {
             return;
@@ -61,17 +55,15 @@ export default function App() {
     };
 
     const toggleTheme = () => {
-        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+        setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
     };
 
     const addToCart = (product) => {
-        setCartItems(prev => {
-            const existing = prev.find(item => item.id === product.id);
+        setCartItems((prev) => {
+            const existing = prev.find((item) => item.id === product.id);
             if (existing) {
-                return prev.map(item =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
+                return prev.map((item) =>
+                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
             }
             return [...prev, { ...product, quantity: 1 }];
@@ -80,16 +72,14 @@ export default function App() {
     };
 
     const removeFromCart = (productId) => {
-        setCartItems(prev => {
-            const existing = prev.find(item => item.id === productId);
+        setCartItems((prev) => {
+            const existing = prev.find((item) => item.id === productId);
             if (existing && existing.quantity > 1) {
-                return prev.map(item =>
-                    item.id === productId
-                        ? { ...item, quantity: item.quantity - 1 }
-                        : item
+                return prev.map((item) =>
+                    item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
                 );
             }
-            return prev.filter(item => item.id !== productId);
+            return prev.filter((item) => item.id !== productId);
         });
     };
 
@@ -97,32 +87,52 @@ export default function App() {
         setCartItems([]);
     };
 
+    const resetFilters = () => {
+        setSearchQuery('');
+        setSelectedCategory('All');
+        setSelectedScale([]);
+        setSortBy('Popularity');
+    };
+
     return (
-        <AppContext.Provider value={{
-            theme, toggleTheme,
-            products, cartItems, cartCount, addToCart, removeFromCart, clearCart,
-            isCartOpen, setIsCartOpen,
-            searchQuery, setSearchQuery,
-            isChatOpen, setIsChatOpen,
-            isCallActive, setIsCallActive,
-            showToast
-        }}>
+        <AppContext.Provider
+            value={{
+                theme,
+                toggleTheme,
+                products,
+                cartItems,
+                cartCount,
+                addToCart,
+                removeFromCart,
+                clearCart,
+                isCartOpen,
+                setIsCartOpen,
+                searchQuery,
+                setSearchQuery,
+                selectedCategory,
+                setSelectedCategory,
+                selectedScale,
+                setSelectedScale,
+                sortBy,
+                setSortBy,
+                resetFilters,
+                showToast
+            }}
+        >
             <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
                 <ScrollProgress />
                 <Header />
                 <main className="flex-1 w-full max-w-[1440px] mx-auto px-6 lg:px-20 py-8">
                     <Hero />
-                    <div className="flex flex-col lg:flex-row gap-10">
+                    <div id="catalog" className="flex flex-col lg:flex-row gap-10">
                         <Filters />
                         <ProductGrid />
                     </div>
                 </main>
                 <Footer />
-                <Chatbot />
-                <VoiceAssistant />
                 <CartModal />
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[5000] flex flex-col gap-2 pointer-events-none">
-                    {toasts.map(toast => (
+                    {toasts.map((toast) => (
                         <Toast key={toast.id} message={toast.message} />
                     ))}
                 </div>

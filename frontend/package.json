@@ -1,8 +1,8 @@
 {
-  "name": "toys",
+  "name": "toys-store",
   "version": "1.0.0",
-  "description": "toys-voiceai",
-  "main": "config.example.js",
+  "type": "module",
+  "description": "Brick & Bolt - Premium building blocks and die-cast models demo store",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
